@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
+    [SerializeField] private Main _main;
     public GameObject[] barriers;
     private Coroutine rotateCor;
 
@@ -12,6 +13,7 @@ public class Target : MonoBehaviour
         for (int i = 0; i <= gameLevel; i++)
         {
             barriers[i].SetActive(true);
+            barriers[i].transform.eulerAngles = Vector3.zero;
         }
 
         rotateCor = StartCoroutine(RotateBarriers(gameLevel));
@@ -19,36 +21,32 @@ public class Target : MonoBehaviour
     
     IEnumerator RotateBarriers(int gameLevel)
     {
+        float rotateSpeed = 0.5f;
         if (gameLevel == 0)
             while (true)
             {
-                barriers[0].transform.Rotate(0, 0, 1, Space.World);
+                barriers[0].transform.Rotate(0, 0, rotateSpeed + _main.record / 50f, Space.World);
                 yield return new WaitForFixedUpdate();
             }
         else if (gameLevel == 1)
             while (true)
             {
-                barriers[0].transform.Rotate(0, 0, 1, Space.World);
-                barriers[1].transform.Rotate(0, 0, 1, Space.World);
+                barriers[0].transform.Rotate(0, 0, rotateSpeed + _main.record / 50f, Space.World);
+                barriers[1].transform.Rotate(0, 0, -rotateSpeed + _main.record / 40f, Space.World);
                 yield return new WaitForFixedUpdate();
             }
-
         else if (gameLevel == 2)
             while (true)
             {
-                barriers[0].transform.Rotate(0, 0, 1, Space.World);
-                barriers[1].transform.Rotate(0, 0, 1, Space.World);
-                barriers[2].transform.Rotate(0, 0, 1, Space.World);
+                barriers[0].transform.Rotate(0, 0, rotateSpeed + _main.record / 50f, Space.World);
+                barriers[1].transform.Rotate(0, 0, -rotateSpeed + _main.record / 40f, Space.World);
+                barriers[2].transform.Rotate(0, 0, rotateSpeed + _main.record / 30f, Space.World);
                 yield return new WaitForFixedUpdate();
             }
     }
 
-    public void DisableBarriers(int gameLevel)
+    public void DisableBarriers()
     {
         StopCoroutine(rotateCor);
-        for (int i = 0; i <= gameLevel; i++)
-        {
-            barriers[i].SetActive(false);
-        }
     }
 }

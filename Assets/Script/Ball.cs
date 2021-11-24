@@ -6,18 +6,21 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     public Main _main;
+    private bool collisionOnBarrier = false;
     void Update()
     {
-        transform.position = Vector3.Lerp(transform.position, 
-            new Vector3(transform.position.x, 1500, transform.position.z), Time.deltaTime * 5);
+        if(!collisionOnBarrier)
+            transform.position = Vector3.Lerp(transform.position, 
+            new Vector3(transform.position.x, 2000, transform.position.z), Time.deltaTime * 4);
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.collider.tag == "Barrier")
         {
+            collisionOnBarrier = true;
+            _main.lastBall.Add(gameObject);
             _main.GameOver();
-            Destroy(gameObject);
         }
 
         if (other.collider.tag == "Target")
