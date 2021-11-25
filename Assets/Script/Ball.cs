@@ -11,7 +11,7 @@ public class Ball : MonoBehaviour
     {
         if(!collisionOnBarrier)
             transform.position = Vector3.Lerp(transform.position, 
-            new Vector3(transform.position.x, 2000, transform.position.z), Time.deltaTime * 4);
+            new Vector3(transform.position.x, 2000, transform.position.z), Time.deltaTime * (4 + _main.record / 50f));
     }
 
     private void OnCollisionEnter2D(Collision2D other)

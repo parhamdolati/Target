@@ -13,6 +13,7 @@ public class Main : MonoBehaviour
     [SerializeField] private Target _target;
     public GameObject menuCanvas, gameCanvas;
     public GameObject gameOver;
+    public GameObject openGameForFirst;
     public Button playBtn, modeBtn, musicBtn, instagramBtn;
     public TMP_Text menuRecordTxt, gamerecordTxt;
     public int record;
@@ -71,10 +72,16 @@ public class Main : MonoBehaviour
             else if (PlayerPrefs.GetInt("music") == 0)
                 musicBtn.transform.Find("OnOff").GetComponent<Image>().color = new Color32(255, 0, 0, 255);
         }
+
+        if (!PlayerPrefs.HasKey("openGameForFirst"))
+            PlayerPrefs.SetInt("openGameForFirst", 0);
     }
 
     void Start()
     {
+        if (PlayerPrefs.GetInt("openGameForFirst").Equals(0))
+            openGameForFirst.SetActive(true);
+        
         lastBall = new List<GameObject>();
         cannon = gameCanvas.transform.Find("Bottom").Find("Cannon").transform;
         ball = gameCanvas.transform.Find("Bottom").Find("Ball").gameObject;
@@ -95,6 +102,7 @@ public class Main : MonoBehaviour
             _soundHandler.PlayEfx("click");
             if(menuRecordTxt.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("idle"))
                 menuRecordTxt.GetComponent<Animator>().SetTrigger("ChangeMode");
+            
             if (gameLevel == 0)
             {
                 gameLevel = 1;
@@ -137,7 +145,7 @@ public class Main : MonoBehaviour
         });
     }
 
-    //shroE bazi be tartip amaliat animation
+    //khroj az menu va shroE bazi be tartip amaliat animation
     IEnumerator PlayGame()
     {
         GameObject title = menuCanvas.transform.Find("Title").gameObject;
@@ -168,25 +176,6 @@ public class Main : MonoBehaviour
     {
         if (canFireBall)
         {
-            #region control fire ball in windowsEditor
-            /*if (Application.platform == RuntimePlatform.WindowsEditor)
-            {
-                while (true)
-                {
-                    if (Input.GetKeyDown(KeyCode.W))
-                    {
-                        GameObject _ball = Instantiate(ball, ball.transform.position, quaternion.identity);
-                        _ball.GetComponent<Ball>()._main = this;
-                        _ball.transform.parent = target.transform;
-                        _ball.SetActive(true);
-                        _soundHandler.PlayEfx("ball");
-                        if (cannon.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("idle"))
-                            cannon.GetComponent<Animator>().SetTrigger("fire");
-                    }
-                }
-            }*/
-            #endregion
-            
             if (Input.touchCount > 0 && Input.GetTouch(0).phase.Equals(TouchPhase.Began))
             {
                 GameObject _ball = Instantiate(ball, ball.transform.position, quaternion.identity);
@@ -271,5 +260,18 @@ public class Main : MonoBehaviour
         }
 
         gameIsStarted = false;
+    }
+
+    //agar karbar avalin bar bud bazi mikonad nick name ra zakhire mikonim
+    public void GetNickname()
+    {
+        string nickname = openGameForFirst.transform.Find("NicknameBorder").Find("NickNameInput")
+            .GetComponent<TMP_InputField>().text;
+        if (nickname != "")
+        {
+            PlayerPrefs.SetString("nickName", nickname);
+            PlayerPrefs.SetInt("openGameForFirst", 1);
+            openGameForFirst.SetActive(false);
+        }
     }
 }
