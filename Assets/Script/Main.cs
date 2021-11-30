@@ -5,6 +5,7 @@ using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class Main : MonoBehaviour
@@ -13,7 +14,7 @@ public class Main : MonoBehaviour
     [SerializeField] private Target _target;
     public GameObject menuCanvas, gameCanvas;
     public GameObject gameOver;
-    public GameObject openGameForFirst;
+    public GameObject openGameForFirst, splashPanel;
     public Button playBtn, modeBtn, musicBtn, instagramBtn;
     public TMP_Text menuRecordTxt, gamerecordTxt;
     public int record;
@@ -24,12 +25,14 @@ public class Main : MonoBehaviour
     private Transform cannon;
     private GameObject ball;
     private GameObject target;
+    private int lastRecord;
     private bool canFireBall;
+    private bool getNewRecord;
 
     private void Awake()
     {
         gameIsStarted = false;
-        
+
         if(!PlayerPrefs.HasKey("gameLevel"))
             PlayerPrefs.SetInt("gameLevel",0);
         else
@@ -79,9 +82,9 @@ public class Main : MonoBehaviour
 
     void Start()
     {
-        if (PlayerPrefs.GetInt("openGameForFirst").Equals(0))
-            openGameForFirst.SetActive(true);
-        
+        StartCoroutine(Splash());
+
+        lastRecord = 0;
         lastBall = new List<GameObject>();
         cannon = gameCanvas.transform.Find("Bottom").Find("Cannon").transform;
         ball = gameCanvas.transform.Find("Bottom").Find("Ball").gameObject;
@@ -99,6 +102,7 @@ public class Main : MonoBehaviour
         });
         modeBtn.onClick.AddListener(() =>
         {
+            lastRecord = 0;
             _soundHandler.PlayEfx("click");
             if(menuRecordTxt.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("idle"))
                 menuRecordTxt.GetComponent<Animator>().SetTrigger("ChangeMode");
@@ -145,9 +149,27 @@ public class Main : MonoBehaviour
         });
     }
 
+    IEnumerator Splash()
+    {
+        splashPanel.SetActive(true);
+        menuCanvas.transform.Find("Title").GetComponent<Animator>().enabled = false;
+        menuCanvas.transform.Find("Buttons").GetComponent<Animator>().enabled = false;
+
+        yield return new WaitForSeconds(splashPanel.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length + 1);
+        splashPanel.SetActive(false);
+        
+        menuCanvas.transform.Find("Title").GetComponent<Animator>().enabled = true;
+        menuCanvas.transform.Find("Buttons").GetComponent<Animator>().enabled = true;
+
+        if (PlayerPrefs.GetInt("openGameForFirst").Equals(0))
+            openGameForFirst.SetActive(true);
+    }
+
     //khroj az menu va shroE bazi be tartip amaliat animation
     IEnumerator PlayGame()
     {
+        record = Mathf.RoundToInt(lastRecord * 60 / 100);
+        gamerecordTxt.text = record.ToString();
         GameObject title = menuCanvas.transform.Find("Title").gameObject;
         title.GetComponent<Animator>().SetTrigger("TitleFadeOff");
         GameObject buttons = menuCanvas.transform.Find("Buttons").gameObject;
@@ -166,7 +188,7 @@ public class Main : MonoBehaviour
         menuCanvas.SetActive(false);
         yield return new WaitForSeconds(gameCanvas.transform.Find("Bottom").GetComponent<Animator>()
             .GetCurrentAnimatorStateInfo(0).length);
-        record = 0;
+        getNewRecord = false;
         _target.CreatBarriers(gameLevel);
         canFireBall = true;
     }
@@ -193,6 +215,30 @@ public class Main : MonoBehaviour
         record++;
         gamerecordTxt.text = record.ToString();
         StartCoroutine(GameRecordTxtAnimation());
+        switch (PlayerPrefs.GetInt("gameLevel"))
+        {
+            case 0:
+                if (record > PlayerPrefs.GetInt("easyRecord") && !getNewRecord)
+                {
+                    getNewRecord = true;
+                    target.transform.Find("NewRecord").gameObject.SetActive(true);
+                }
+                break;
+            case 1:
+                if (record > PlayerPrefs.GetInt("normalRecord") && !getNewRecord)
+                {
+                    getNewRecord = true;
+                    target.transform.Find("NewRecord").gameObject.SetActive(true);
+                }
+                break;
+            case 2:
+                if (record > PlayerPrefs.GetInt("hardRecord") && !getNewRecord)
+                {
+                    getNewRecord = true;
+                    target.transform.Find("NewRecord").gameObject.SetActive(true);
+                }
+                break;
+        }
     }
     
     IEnumerator GameRecordTxtAnimation()
@@ -207,6 +253,7 @@ public class Main : MonoBehaviour
         _soundHandler.PlayMusic("stop");
         _soundHandler.PlayEfx("over");
         canFireBall = false;
+        lastRecord = record;
         switch (PlayerPrefs.GetInt("gameLevel"))
         {
             case 0:
@@ -251,7 +298,7 @@ public class Main : MonoBehaviour
         }
         lastBall.Clear();
         gameOver.SetActive(false);
-        gamerecordTxt.text = "0";
+        //gamerecordTxt.text = "0";
         gameCanvas.SetActive(false);
         menuCanvas.SetActive(true);
         foreach (GameObject barrier in _target.barriers)
@@ -260,6 +307,7 @@ public class Main : MonoBehaviour
         }
 
         gameIsStarted = false;
+        target.transform.GetChild(0).Find("NewRecord").gameObject.SetActive(false);
     }
 
     //agar karbar avalin bar bud bazi mikonad nick name ra zakhire mikonim

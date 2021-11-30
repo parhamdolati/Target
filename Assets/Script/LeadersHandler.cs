@@ -22,117 +22,162 @@ public class LeadersHandler : MonoBehaviour
     public ScrollRect easyView, normalView, hardView;
     public GameObject easyTempPlayer, normalTempPlayer, hardTempPlayer;
     private List<GameObject> easyLeadersPlayerList, normalLeadersPlayerList, hardLeadersPlayerList;
-    
+    private bool onLeaderLoading;
     
     private void Awake()
     {
         easyLeadersPlayerList = new List<GameObject>();
         normalLeadersPlayerList = new List<GameObject>();
         hardLeadersPlayerList = new List<GameObject>();
+        onLeaderLoading = false;
     }
 
+    //bazkardan panel leaderBoard
+    public void OpenLeadersboard()
+    {
+        gameObject.SetActive(true);
+        _soundHandler.PlayEfx("click");
+        LoginToGameservice();
+    }
+    
+    //bastan panel LeaderBoard
+    public void CloseLeadersboard()
+    {
+        //agar load kardan leader tamam shode bashad vaghti leaders ra mibandim list haro pak kon
+        if (!onLeaderLoading)
+            ClearAllLeadersList();
+        
+        leadersPanelErrortxt.gameObject.SetActive(false);
+        transform.Find("Loading").gameObject.SetActive(false);
+        gameObject.SetActive(false);
+        _soundHandler.PlayEfx("click");
+    }
+    
     //be game servis vasl mishavim, record haye khod ra ersal mikonim va tamami dade haye leader board haro migirim va set mikonim
     async Task LoginToGameservice()
     {
-        ViewEasy();
+        switch (PlayerPrefs.GetInt("gameLevel"))
+        {
+            case 0:
+                ViewEasy();
+                break;
+            case 1:
+                ViewNormal();
+                break;
+            case 2:
+                ViewHard();
+                break;
+        }
         transform.Find("Loading").gameObject.SetActive(true);
         try
         {
-            //agar az ghabl vasl nashode bashim vals mishavim va nick name ra set mikonim
-            if (!GameService.IsAuthenticated())
+            //agar karbar chand bar posht sare ham leaders ra baz o baste konad, chandin list ejad mishavad chon chandin darkhast ferestade misgavd
+            //baraye hale in moshkel ba boolian va pak kardan list ghabl az baz kardan in moshkel ra hal mikonim
+            if (!onLeaderLoading)
             {
-                await GameService.LoginOrSignUp.LoginAsGuest();
-                EditUserProfile profile = new EditUserProfile(nickName: PlayerPrefs.GetString("nickName"));
-                await GameService.Player.EditCurrentPlayerProfile(profile);
-            }
+                ClearAllLeadersList();
+                onLeaderLoading = true;
+                //agar az ghabl vasl nashode bashim vals mishavim va nick name ra set mikonim
+                if (!GameService.IsAuthenticated())
+                {
+                    await GameService.LoginOrSignUp.LoginAsGuest();
+                    EditUserProfile profile = new EditUserProfile(nickName: PlayerPrefs.GetString("nickName"));
+                    await GameService.Player.EditCurrentPlayerProfile(profile);
+                }
 
-            #region EasyHandler
-            
-            //ersal record be servis
-            if(PlayerPrefs.GetInt("easyRecord") > 0)
-                await GameService.Leaderboard.SubmitScore("619f66ca11c8a2001907cfae", PlayerPrefs.GetInt("easyRecord"));
-            //daryaft dade haye leaderBoard
-            LeaderBoardDetails easyLeaderBoards = await GameService.Leaderboard.GetLeaderBoardDetails("619f66ca11c8a2001907cfae"
-                ,50);
-            //sakhtan list player ha
-            foreach (var profile in easyLeaderBoards.Scores)
-            {
-                var _player = Instantiate(easyTempPlayer, Vector3.zero, quaternion.identity);
-                _player.transform.parent = easyTempPlayer.transform.parent;
-                if (profile.Submitter.User.IsMe)
-                    _player.GetComponent<Image>().color = new Color32(0, 0, 255, 255);
-                _player.SetActive(true);
-                easyLeadersPlayerList.Add(_player);
-                _player.transform.Find("Rank").GetComponent<Text>().text = profile.Rank.ToString();
-                _player.transform.Find("Nickname").GetComponent<TMP_Text>().text = profile.Submitter.Name;
-                _player.transform.Find("Record").GetComponent<Text>().text = profile.Value.ToString();
-            }
+                #region EasyHandler
 
-            #endregion
-            
-            #region NormalHandler
-            
-            //ersal record be servis
-            if(PlayerPrefs.GetInt("normalRecord") > 0)
-                await GameService.Leaderboard.SubmitScore("619f671211c8a2001907cfaf", PlayerPrefs.GetInt("normalRecord"));
-            //daryaft dade haye leaderBoard
-            LeaderBoardDetails normalLeaderBoards = await GameService.Leaderboard.GetLeaderBoardDetails("619f671211c8a2001907cfaf"
-                ,50);
-            //sakhtan list player ha
-            foreach (var profile in normalLeaderBoards.Scores)
-            {
-                var _player = Instantiate(normalTempPlayer, Vector3.zero, quaternion.identity);
-                _player.transform.parent = normalTempPlayer.transform.parent;
-                if (profile.Submitter.User.IsMe)
-                    _player.GetComponent<Image>().color = new Color32(0, 0, 255, 255);
-                _player.SetActive(true);
-                normalLeadersPlayerList.Add(_player);
-                _player.transform.Find("Rank").GetComponent<Text>().text = profile.Rank.ToString();
-                _player.transform.Find("Nickname").GetComponent<TMP_Text>().text = profile.Submitter.Name;
-                _player.transform.Find("Record").GetComponent<Text>().text = profile.Value.ToString();
-            }
+                //ersal record be servis
+                if (PlayerPrefs.GetInt("easyRecord") > 0)
+                    await GameService.Leaderboard.SubmitScore("619f66ca11c8a2001907cfae",
+                        PlayerPrefs.GetInt("easyRecord"));
+                //daryaft dade haye leaderBoard
+                LeaderBoardDetails easyLeaderBoards = await GameService.Leaderboard.GetLeaderBoardDetails(
+                    "619f66ca11c8a2001907cfae"
+                    , 50);
+                //sakhtan list player ha
+                foreach (var profile in easyLeaderBoards.Scores)
+                {
+                    var _player = Instantiate(easyTempPlayer, Vector3.zero, quaternion.identity);
+                    _player.transform.parent = easyTempPlayer.transform.parent;
+                    if (profile.Submitter.User.IsMe)
+                        _player.GetComponent<Image>().color = new Color32(0, 0, 255, 255);
+                    _player.transform.localScale = new Vector3(.95f, .95f, .95f);
+                    _player.SetActive(true);
+                    easyLeadersPlayerList.Add(_player);
+                    _player.transform.Find("Rank").GetComponent<Text>().text = profile.Rank.ToString();
+                    _player.transform.Find("Nickname").GetComponent<TMP_Text>().text = profile.Submitter.Name;
+                    _player.transform.Find("Record").GetComponent<Text>().text = profile.Value.ToString();
+                }
 
-            #endregion
-            
-            #region NormalHandler
-            
-            //ersal record be servis
-            if(PlayerPrefs.GetInt("hardRecord") > 0)
-                await GameService.Leaderboard.SubmitScore("619f673111c8a2001907cfb0", PlayerPrefs.GetInt("hardRecord"));
-            //daryaft dade haye leaderBoard
-            LeaderBoardDetails hardLeaderBoards = await GameService.Leaderboard.GetLeaderBoardDetails("619f673111c8a2001907cfb0"
-                ,50);
-            //sakhtan list player ha
-            foreach (var profile in hardLeaderBoards.Scores)
-            {
-                var _player = Instantiate(hardTempPlayer, Vector3.zero, quaternion.identity);
-                _player.transform.parent = hardTempPlayer.transform.parent;
-                if (profile.Submitter.User.IsMe)
-                    _player.GetComponent<Image>().color = new Color32(0, 0, 255, 255);
-                _player.SetActive(true);
-                hardLeadersPlayerList.Add(_player);
-                _player.transform.Find("Rank").GetComponent<Text>().text = profile.Rank.ToString();
-                _player.transform.Find("Nickname").GetComponent<TMP_Text>().text = profile.Submitter.Name;
-                _player.transform.Find("Record").GetComponent<Text>().text = profile.Value.ToString();
-            }
+                #endregion
 
-            #endregion
-            
-            transform.Find("Loading").gameObject.SetActive(false);
+                #region NormalHandler
+
+                //ersal record be servis
+                if (PlayerPrefs.GetInt("normalRecord") > 0)
+                    await GameService.Leaderboard.SubmitScore("619f671211c8a2001907cfaf",
+                        PlayerPrefs.GetInt("normalRecord"));
+                //daryaft dade haye leaderBoard
+                LeaderBoardDetails normalLeaderBoards = await GameService.Leaderboard.GetLeaderBoardDetails(
+                    "619f671211c8a2001907cfaf"
+                    , 50);
+                //sakhtan list player ha
+                foreach (var profile in normalLeaderBoards.Scores)
+                {
+                    var _player = Instantiate(normalTempPlayer, Vector3.zero, quaternion.identity);
+                    _player.transform.parent = normalTempPlayer.transform.parent;
+                    if (profile.Submitter.User.IsMe)
+                        _player.GetComponent<Image>().color = new Color32(0, 0, 255, 255);
+                    _player.transform.localScale = new Vector3(.95f, .95f, .95f);
+                    _player.SetActive(true);
+                    normalLeadersPlayerList.Add(_player);
+                    _player.transform.Find("Rank").GetComponent<Text>().text = profile.Rank.ToString();
+                    _player.transform.Find("Nickname").GetComponent<TMP_Text>().text = profile.Submitter.Name;
+                    _player.transform.Find("Record").GetComponent<Text>().text = profile.Value.ToString();
+                }
+
+                #endregion
+
+                #region HardHandler
+
+                //ersal record be servis
+                if (PlayerPrefs.GetInt("hardRecord") > 0)
+                    await GameService.Leaderboard.SubmitScore("619f673111c8a2001907cfb0",
+                        PlayerPrefs.GetInt("hardRecord"));
+                //daryaft dade haye leaderBoard
+                LeaderBoardDetails hardLeaderBoards = await GameService.Leaderboard.GetLeaderBoardDetails(
+                    "619f673111c8a2001907cfb0"
+                    , 50);
+                //sakhtan list player ha
+                foreach (var profile in hardLeaderBoards.Scores)
+                {
+                    var _player = Instantiate(hardTempPlayer, Vector3.zero, quaternion.identity);
+                    _player.transform.parent = hardTempPlayer.transform.parent;
+                    if (profile.Submitter.User.IsMe)
+                        _player.GetComponent<Image>().color = new Color32(0, 0, 255, 255);
+                    _player.transform.localScale = new Vector3(.95f, .95f, .95f);
+                    _player.SetActive(true);
+                    hardLeadersPlayerList.Add(_player);
+                    _player.transform.Find("Rank").GetComponent<Text>().text = profile.Rank.ToString();
+                    _player.transform.Find("Nickname").GetComponent<TMP_Text>().text = profile.Submitter.Name;
+                    _player.transform.Find("Record").GetComponent<Text>().text = profile.Value.ToString();
+                }
+
+                #endregion
+
+                transform.Find("Loading").gameObject.SetActive(false);
+                leadersPanelErrortxt.gameObject.SetActive(false);
+                onLeaderLoading = false;
+            }
         }
         
         catch (Exception e)
         {
             leadersPanelErrortxt.gameObject.SetActive(true);
             transform.Find("Loading").gameObject.SetActive(false);
-            if (e is GameServiceException)
-            { 
-                leadersPanelErrortxt.text = "Game Server Error: " + e.Message;
-            }
-            else
-            {
-                leadersPanelErrortxt.text = e.Message;
-            }
+            leadersPanelErrortxt.text = "Opss!\nPlease turn on internet and re-open leaders panel\n(turn off your vpn!)";
+            onLeaderLoading = false;
         }
     }
 
@@ -172,16 +217,7 @@ public class LeadersHandler : MonoBehaviour
         hardView.gameObject.SetActive(true);
     }
 
-    //bazkardan panel leaderBoard
-    public void OpenLeadersboard()
-    {
-        gameObject.SetActive(true);
-        _soundHandler.PlayEfx("click");
-        LoginToGameservice();
-    }
-    
-    //bastan panel LeaderBoard
-    public void CloseLeadersboard()
+    void ClearAllLeadersList()
     {
         foreach (GameObject player in easyLeadersPlayerList)
             Destroy(player);
@@ -192,9 +228,5 @@ public class LeadersHandler : MonoBehaviour
         easyLeadersPlayerList.Clear();
         normalLeadersPlayerList.Clear();
         hardLeadersPlayerList.Clear();
-        leadersPanelErrortxt.gameObject.SetActive(false);
-        transform.Find("Loading").gameObject.SetActive(false);
-        gameObject.SetActive(false);
-        _soundHandler.PlayEfx("click");
     }
 }
