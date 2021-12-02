@@ -28,6 +28,7 @@ public class Main : MonoBehaviour
     private int lastRecord;
     private bool canFireBall;
     private bool getNewRecord;
+    private float touchBeginTime;
 
     private void Awake()
     {
@@ -188,7 +189,6 @@ public class Main : MonoBehaviour
         menuCanvas.SetActive(false);
         yield return new WaitForSeconds(gameCanvas.transform.Find("Bottom").GetComponent<Animator>()
             .GetCurrentAnimatorStateInfo(0).length);
-        getNewRecord = false;
         _target.CreatBarriers(gameLevel);
         canFireBall = true;
     }
@@ -200,12 +200,22 @@ public class Main : MonoBehaviour
         {
             if (Input.touchCount > 0 && Input.GetTouch(0).phase.Equals(TouchPhase.Began))
             {
-                GameObject _ball = Instantiate(ball, ball.transform.position, quaternion.identity);
-                _ball.transform.parent = target.transform;
-                _ball.SetActive(true);
-                _soundHandler.PlayEfx("ball");
-                if (cannon.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("idle"))
-                    cannon.GetComponent<Animator>().SetTrigger("fire");
+                touchBeginTime = Time.time;
+            }
+            
+            else if (Input.GetTouch(0).phase.Equals(TouchPhase.Ended))
+            {
+                if (Time.time - touchBeginTime < 0.5f)
+                {
+                    GameObject _ball = Instantiate(ball, ball.transform.position, quaternion.identity);
+                    _ball.transform.parent = target.transform;
+                    _ball.transform.localScale = Vector3.one;
+                    _ball.SetActive(true);
+                    _soundHandler.PlayEfx("ball");
+                    if (cannon.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("idle"))
+                        cannon.GetComponent<Animator>().SetTrigger("fire");
+                }
+                touchBeginTime = 0;
             }
         }
     }
@@ -307,7 +317,8 @@ public class Main : MonoBehaviour
         }
 
         gameIsStarted = false;
-        target.transform.GetChild(0).Find("NewRecord").gameObject.SetActive(false);
+        getNewRecord = false;
+        target.transform.Find("NewRecord").gameObject.SetActive(false);
     }
 
     //agar karbar avalin bar bud bazi mikonad nick name ra zakhire mikonim
