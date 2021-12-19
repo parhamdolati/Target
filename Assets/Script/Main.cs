@@ -196,26 +196,47 @@ public class Main : MonoBehaviour
     //controll shellik ball dar har frame
     void Update()
     {
-        if (canFireBall)
+        if (Application.platform == RuntimePlatform.WindowsEditor)
         {
-            if (Input.touchCount > 0 && Input.GetTouch(0).phase.Equals(TouchPhase.Began))
+            if (canFireBall)
             {
-                touchBeginTime = Time.time;
-            }
-            
-            else if (Input.GetTouch(0).phase.Equals(TouchPhase.Ended))
-            {
-                if (Time.time - touchBeginTime < 0.5f)
+                if (Input.GetKeyDown(KeyCode.W))
                 {
                     GameObject _ball = Instantiate(ball, ball.transform.position, quaternion.identity);
-                    _ball.transform.parent = target.transform;
-                    _ball.transform.localScale = Vector3.one;
-                    _ball.SetActive(true);
-                    _soundHandler.PlayEfx("ball");
-                    if (cannon.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("idle"))
-                        cannon.GetComponent<Animator>().SetTrigger("fire");
+                        _ball.transform.parent = target.transform;
+                        _ball.transform.localScale = Vector3.one;
+                        _ball.SetActive(true);
+                        _soundHandler.PlayEfx("ball");
+                        if (cannon.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("idle"))
+                            cannon.GetComponent<Animator>().SetTrigger("fire");
+                    
                 }
-                touchBeginTime = 0;
+            }
+        }
+        else
+        {
+            if (canFireBall)
+            {
+                if (Input.touchCount > 0 && Input.GetTouch(0).phase.Equals(TouchPhase.Began))
+                {
+                    touchBeginTime = Time.time;
+                }
+
+                else if (Input.GetTouch(0).phase.Equals(TouchPhase.Ended))
+                {
+                    if (Time.time - touchBeginTime < 0.5f)
+                    {
+                        GameObject _ball = Instantiate(ball, ball.transform.position, quaternion.identity);
+                        _ball.transform.parent = target.transform;
+                        _ball.transform.localScale = Vector3.one;
+                        _ball.SetActive(true);
+                        _soundHandler.PlayEfx("ball");
+                        if (cannon.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("idle"))
+                            cannon.GetComponent<Animator>().SetTrigger("fire");
+                    }
+
+                    touchBeginTime = 0;
+                }
             }
         }
     }
