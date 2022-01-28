@@ -1,27 +1,29 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class Main : MonoBehaviour
 {
     [SerializeField] private SoundHandler _soundHandler;
     [SerializeField] private Target _target;
-    public GameObject menuCanvas, gameCanvas;
-    public GameObject gameOver;
-    public GameObject openGameForFirst, splashPanel;
-    public Button playBtn, modeBtn, musicBtn, instagramBtn;
-    public TMP_Text menuRecordTxt, gamerecordTxt;
-    public int record;
-    public List<GameObject> lastBall;
+    [SerializeField] private GameObject menuCanvas, gameCanvas;
+    [SerializeField] private GameObject gameOver;
+    [SerializeField] private GameObject openGameForFirst, splashPanel;
+    [SerializeField] private Button playBtn, modeBtn, musicBtn, instagramBtn;
+    [SerializeField] private TMP_Text menuRecordTxt, gamerecordTxt;
+
+    private int record;
+    public int Record
+    {
+        get { return record; }
+    }
+
+    private List<GameObject> lastBall;
     private int gameLevel;
     private bool gameIsStarted;//baraye kontrol kardan inke chand bar play ro nazanim
-
     private Transform cannon;
     private GameObject ball;
     private GameObject target;
@@ -176,8 +178,7 @@ public class Main : MonoBehaviour
         GameObject buttons = menuCanvas.transform.Find("Buttons").gameObject;
         buttons.GetComponent<Animator>().SetTrigger("ButtonsFadeOff");
         menuRecordTxt.gameObject.SetActive(false);
-        _soundHandler.PlayMusic("play");
-        
+
         float waitSec = .5f;
         if (title.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length
             > buttons.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length)
@@ -281,7 +282,6 @@ public class Main : MonoBehaviour
     
     public void GameOver()
     {
-        _soundHandler.PlayMusic("stop");
         _soundHandler.PlayEfx("over");
         canFireBall = false;
         lastRecord = record;
@@ -353,5 +353,10 @@ public class Main : MonoBehaviour
             PlayerPrefs.SetInt("openGameForFirst", 1);
             openGameForFirst.SetActive(false);
         }
+    }
+
+    public void AddToLastBall(GameObject ball)
+    {
+        lastBall.Add(ball);
     }
 }

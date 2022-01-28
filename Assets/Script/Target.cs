@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Target : MonoBehaviour
@@ -25,22 +24,22 @@ public class Target : MonoBehaviour
         if (gameLevel == 0)
             while (true)
             {
-                barriers[0].transform.Rotate(0, 0, rotateSpeed + _main.record / 50f, Space.World);
+                barriers[0].transform.Rotate(0, 0, rotateSpeed + _main.Record / 50f, Space.World);
                 yield return new WaitForFixedUpdate();
             }
         else if (gameLevel == 1)
             while (true)
             {
-                barriers[0].transform.Rotate(0, 0, rotateSpeed + _main.record / 50f, Space.World);
-                barriers[1].transform.Rotate(0, 0, -rotateSpeed + _main.record / 40f, Space.World);
+                barriers[0].transform.Rotate(0, 0, rotateSpeed + _main.Record / 50f, Space.World);
+                barriers[1].transform.Rotate(0, 0, -rotateSpeed + _main.Record / 40f, Space.World);
                 yield return new WaitForFixedUpdate();
             }
         else if (gameLevel == 2)
             while (true)
             {
-                barriers[0].transform.Rotate(0, 0, rotateSpeed + _main.record / 50f, Space.World);
-                barriers[1].transform.Rotate(0, 0, -rotateSpeed + _main.record / 40f, Space.World);
-                barriers[2].transform.Rotate(0, 0, rotateSpeed + _main.record / 30f, Space.World);
+                barriers[0].transform.Rotate(0, 0, rotateSpeed + _main.Record / 50f, Space.World);
+                barriers[1].transform.Rotate(0, 0, -rotateSpeed + _main.Record / 40f, Space.World);
+                barriers[2].transform.Rotate(0, 0, rotateSpeed + _main.Record / 30f, Space.World);
                 yield return new WaitForFixedUpdate();
             }
     }

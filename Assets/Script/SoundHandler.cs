@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SoundHandler : MonoBehaviour
@@ -8,22 +5,6 @@ public class SoundHandler : MonoBehaviour
     public AudioSource music, efx;
     public AudioClip[] efxs;//0 releas ball - 1 click - 2 game over
     
-    public void PlayMusic(string situation)
-    {
-        /*switch (situation)
-        {
-            case "play":
-                if (PlayerPrefs.GetInt("music").Equals(1))
-                {
-                    music.Play();
-                }
-                break;
-            case "stop":
-                music.Stop();
-                break;
-        }*/
-    }
-
     public void PlayEfx(string situation)
     {
         if (PlayerPrefs.GetInt("music").Equals(1))
