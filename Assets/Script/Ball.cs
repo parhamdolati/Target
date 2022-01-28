@@ -1,31 +1,24 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    public Main _main;
-    private bool collisionOnBarrier = false;
-    void Update()
+    private void Update()
     {
-        if (!collisionOnBarrier)
-            //transform.position = Vector3.Lerp(transform.position, 
-            //new Vector3(transform.position.x, 2000, transform.position.z), Time.deltaTime * (4 + _main.record / 50f));
-            transform.position = Vector3.Lerp(transform.position, 
-                new Vector3(transform.position.x, transform.position.y + 40, transform.position.z), Time.deltaTime * (100 + _main.Record / 50f));
+        transform.position = Vector3.up;
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.collider.tag == "Barrier")
+        if (other.tag == "Barrier")
         {
-            collisionOnBarrier = true;
-            _main.AddToLastBall(gameObject);
-            _main.GameOver();
+            Manager.Instance.GameOver();
         }
-
-        if (other.collider.tag == "Target")
+        else if (other.tag == "Target")
         {
-            _main.RecordUp();
-            Destroy(gameObject);
+            Manager.Instance.RecordUp();
         }
     }
 }

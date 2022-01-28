@@ -52,11 +52,12 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Script\Main.cs" />
-     <Compile Include="Assets\Script\Target.cs" />
-     <Compile Include="Assets\Script\LeadersHandler.cs" />
      <Compile Include="Assets\Script\Ball.cs" />
-     <Compile Include="Assets\Script\SoundHandler.cs" />
+     <Compile Include="Assets\Script\Manager.cs" />
+     <Compile Include="Assets\Script\UiManager.cs" />
+     <Compile Include="Assets\Script\InitManager.cs" />
+     <Compile Include="Assets\Script\SFXManager.cs" />
+     <Compile Include="Assets\Script\GameManager.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\RTLTMPro\Resources\Shaders\TMP_SDF-Mobile Fixed.shader" />
