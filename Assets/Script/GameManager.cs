@@ -6,6 +6,9 @@ using UnityEngine;
 public class GameManager : InitManager
 {
     [SerializeField] private GameObject[] barriers;
+    [SerializeField] private GameObject target;
+    [SerializeField] private GameObject cannon;
+    private List<GameObject> Balls = new List<GameObject>();
     private Coroutine rotateCor;
     private int record;
     private void Start()
@@ -27,17 +30,23 @@ public class GameManager : InitManager
 
         record = 0;
         Manager.Instance.UpdateGameRecord(record);
-        Manager.Instance.PermitionToFire();
     }
 
     void GameOver()
     {
+        for (int i = 0; i < Balls.Count; i++)
+        {
+            PollingSystem.Instance.BackToPool("Ball",Balls[i]);
+            Balls.Remove(Balls[i]);
+        }
         Manager.Instance.GoToMenu();
     }
 
-    void RecordUp()
+    void RecordUp(GameObject ball)
     {
         record++;
+        PollingSystem.Instance.BackToPool("Ball",ball);
+        Balls.Remove(ball);
         Manager.Instance.UpdateGameRecord(record);
     }
     
@@ -70,5 +79,24 @@ public class GameManager : InitManager
     public void StopRotateBarriers()
     {
         StopCoroutine(rotateCor);
+    }
+    
+    private void Update()
+    {
+        if (Application.platform == RuntimePlatform.WindowsEditor)
+        {
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                var ball = PollingSystem.Instance.GetFromPool("Ball");
+                ball.transform.parent = target.transform;
+                ball.transform.localScale = Vector3.one * 2;
+                ball.transform.position = cannon.transform.parent.Find("Ball").transform.position;
+                ball.SetActive(true);
+                Manager.Instance.PlayEfx("ball");
+                if (cannon.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("idle"))
+                    cannon.GetComponent<Animator>().SetTrigger("fire");
+                Balls.Add(ball);
+            }
+        }
     }
 }

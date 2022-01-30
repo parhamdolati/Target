@@ -634,7 +634,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &241309795
 GameObject:
@@ -1319,7 +1319,7 @@ AudioSource:
   m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e2c6236a6aecf8b40b1a596535ced714, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -1414,6 +1414,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 388744991}
+  - component: {fileID: 388744992}
   m_Layer: 0
   m_Name: PollingSystem
   m_TagString: Untagged
@@ -1435,6 +1436,23 @@ Transform:
   m_Father: {fileID: 1031265544}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &388744992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388744990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d8dcb2df77330842bb17f7ecfeacf68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInited: 0
+  pools:
+  - tag: Ball
+    prefab: {fileID: 8503331365219604319, guid: e72548cb077a7d9409a1931ecf4e3c8c, type: 3}
+    size: 20
 --- !u!1 &394416513
 GameObject:
   m_ObjectHideFlags: 0
@@ -1849,7 +1867,7 @@ RectTransform:
   - {fileID: 954145119}
   - {fileID: 352677770}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1957,30 +1975,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb69f07adc8571249b4b92204103e9dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _soundHandler: {fileID: 519420033}
-  _target: {fileID: 770938516}
-  menuCanvas: {fileID: 1132315715}
-  gameCanvas: {fileID: 855160154}
-  gameOver: {fileID: 1527549034}
-  openGameForFirst: {fileID: 1721980565}
-  splashPanel: {fileID: 0}
-  playBtn: {fileID: 1516148932}
-  modeBtn: {fileID: 1451942492}
-  musicBtn: {fileID: 1366039739}
-  instagramBtn: {fileID: 151091080}
-  menuRecordTxt: {fileID: 781422306}
-  gamerecordTxt: {fileID: 603018953}
-  record: 0
-  lastBall: []
-  gameLevel: 0
-  gameIsStarted: 0
-  cannon: {fileID: 0}
-  ball: {fileID: 0}
-  target: {fileID: 0}
-  lastRecord: 0
-  canFireBall: 0
-  getNewRecord: 0
-  touchBeginTime: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -2036,7 +2030,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &519420033
 MonoBehaviour:
@@ -2050,12 +2044,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0fcb4f6a158dad4f9b50ad234b0e75a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  music: {fileID: 0}
-  efx: {fileID: 1763117159}
-  efxs:
-  - {fileID: 8300000, guid: 8f555097f6c422a49b325c52ed5e725c, type: 3}
-  - {fileID: 8300000, guid: 6c52877cc3e5ead4cb26982645162b91, type: 3}
-  - {fileID: 8300000, guid: 964451364c2350b4ca6f42f7bf46cbd7, type: 3}
 --- !u!1 &541059608
 GameObject:
   m_ObjectHideFlags: 0
@@ -2449,7 +2437,6 @@ GameObject:
   - component: {fileID: 770938514}
   - component: {fileID: 770938513}
   - component: {fileID: 770938515}
-  - component: {fileID: 770938516}
   m_Layer: 0
   m_Name: Target
   m_TagString: Target
@@ -2535,23 +2522,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 153
---- !u!114 &770938516
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 770938511}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 663e724593166824eb6327d96f91959f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _main: {fileID: 519420030}
-  barriers:
-  - {fileID: 1097050498}
-  - {fileID: 1075721205}
-  - {fileID: 1890919474}
 --- !u!1 &781422304
 GameObject:
   m_ObjectHideFlags: 0
@@ -3030,7 +3000,7 @@ RectTransform:
   - {fileID: 838335616}
   - {fileID: 1527549035}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3592,6 +3562,8 @@ MonoBehaviour:
   - {fileID: 1097050498}
   - {fileID: 1075721205}
   - {fileID: 1890919474}
+  target: {fileID: 770938511}
+  cannon: {fileID: 1834840219}
 --- !u!1 &986435306
 GameObject:
   m_ObjectHideFlags: 0
@@ -3991,6 +3963,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UiManager: {fileID: 1488666058}
   SfxManager: {fileID: 1915974170}
+  GameManager: {fileID: 983039297}
+  PollingSystem: {fileID: 388744992}
 --- !u!4 &1031265544
 Transform:
   m_ObjectHideFlags: 0
@@ -4007,7 +3981,7 @@ Transform:
   - {fileID: 983039296}
   - {fileID: 388744991}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1034920890
 GameObject:
@@ -4229,7 +4203,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1075721205
 GameObject:
@@ -4636,7 +4610,7 @@ RectTransform:
   - {fileID: 1711946852}
   - {fileID: 1721980566}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4942,14 +4916,14 @@ RectTransform:
   m_GameObject: {fileID: 1314825107}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 838335616}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -574.5}
+  m_AnchoredPosition: {x: 0, y: -565}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1314825110
@@ -6129,7 +6103,7 @@ MonoBehaviour:
   musicBtn: {fileID: 1366039739}
   instagramBtn: {fileID: 151091080}
   menuRecordTxt: {fileID: 781422306}
-  gameRecordTxt: {fileID: 0}
+  gameRecordTxt: {fileID: 603018953}
 --- !u!4 &1488666059
 Transform:
   m_ObjectHideFlags: 0
@@ -6961,21 +6935,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18668c7ee45caba4595ac998695915e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _soundHandler: {fileID: 519420033}
-  leadersPanelErrortxt: {fileID: 1360280586}
-  easyBtn: {fileID: 2031003350}
-  normalBtn: {fileID: 338714013}
-  hardBtn: {fileID: 430267150}
-  easyView: {fileID: 1368967980}
-  normalView: {fileID: 1960202708}
-  hardView: {fileID: 2134881667}
-  easyTempPlayer: {fileID: 925271036}
-  normalTempPlayer: {fileID: 826656577}
-  hardTempPlayer: {fileID: 436757759}
-  easyLeadersPlayerList: []
-  normalLeadersPlayerList: []
-  hardLeadersPlayerList: []
-  onLeaderLoading: 0
 --- !u!1 &1721980565
 GameObject:
   m_ObjectHideFlags: 0
@@ -7466,7 +7425,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1825750820
 GameObject:

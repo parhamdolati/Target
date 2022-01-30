@@ -7,7 +7,7 @@ public class Ball : MonoBehaviour
 {
     private void Update()
     {
-        transform.position = Vector3.up;
+        //transform.position += Vector3.up;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -18,7 +18,7 @@ public class Ball : MonoBehaviour
         }
         else if (other.tag == "Target")
         {
-            Manager.Instance.RecordUp();
+            Manager.Instance.RecordUp(gameObject);
         }
     }
 }
