@@ -77,7 +77,7 @@ public class PollingSystem : InitManager
         if (poolDictionary.ContainsKey(tag))
         {
             obj.SetActive(false);
-            obj.transform.parent = transform;
+            //obj.transform.parent = transform;
             poolDictionary[tag].Enqueue(obj);
         }
     }

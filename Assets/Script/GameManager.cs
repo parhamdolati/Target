@@ -89,7 +89,7 @@ public class GameManager : InitManager
             {
                 var ball = PollingSystem.Instance.GetFromPool("Ball");
                 ball.transform.parent = target.transform;
-                ball.transform.localScale = Vector3.one * 2;
+                ball.transform.localScale = Vector3.one;
                 ball.transform.position = cannon.transform.parent.Find("Ball").transform.position;
                 ball.SetActive(true);
                 Manager.Instance.PlayEfx("ball");
