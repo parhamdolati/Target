@@ -2531,8 +2531,8 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 770938511}
-  m_BodyType: 0
-  m_Simulated: 0
+  m_BodyType: 1
+  m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
@@ -3586,6 +3586,7 @@ MonoBehaviour:
   - {fileID: 1890919474}
   target: {fileID: 770938511}
   cannon: {fileID: 1834840219}
+  gameOver: {fileID: 1527549034}
 --- !u!1 &986435306
 GameObject:
   m_ObjectHideFlags: 0
@@ -3987,6 +3988,8 @@ MonoBehaviour:
   SfxManager: {fileID: 1915974170}
   GameManager: {fileID: 983039297}
   PollingSystem: {fileID: 388744992}
+  triggerOnBarrier: 0
+  gameMode: 0
 --- !u!4 &1031265544
 Transform:
   m_ObjectHideFlags: 0
@@ -4190,7 +4193,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1059293119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6126,6 +6129,7 @@ MonoBehaviour:
   instagramBtn: {fileID: 151091080}
   menuRecordTxt: {fileID: 781422306}
   gameRecordTxt: {fileID: 603018953}
+  newRecord: {fileID: 2095651206}
 --- !u!4 &1488666059
 Transform:
   m_ObjectHideFlags: 0

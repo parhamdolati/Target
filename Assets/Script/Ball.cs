@@ -5,30 +5,24 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    private bool collisionOnBarrier = false;
+    private int baseSpeed = 1;
     private void Update()
     {
-        if(!collisionOnBarrier)
-            transform.position += Vector3.up;
+        if (!Manager.Instance.triggerOnBarrier)
+            transform.position += Vector3.up *  (baseSpeed + ((100 + Manager.Instance.GetRecord()) / 50f));
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Barrier"))
+        if (other.gameObject.tag == "Barrier")
         {
-            collisionOnBarrier = true;
-            Debug.Log("Barrier");
-            //Manager.Instance.GameOver();
+            Manager.Instance.triggerOnBarrier = true;
+            GetComponent<Animator>().enabled = true;
+            Manager.Instance.GameOver();
         }
-        else if (other.CompareTag("Target"))
+        else if (other.gameObject.tag == "Target")
         {
-            Debug.Log("Target");
-            //Manager.Instance.RecordUp(gameObject);
+            Manager.Instance.RecordUp(gameObject);
         }
-    }
-
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        Debug.Log(other.gameObject.name);
     }
 }

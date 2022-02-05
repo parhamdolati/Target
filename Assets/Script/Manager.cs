@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Manager : MonoBehaviour
 {
     public static Manager Instance;
+    
     [SerializeField] private UiManager UiManager;
     [SerializeField] private SFXManager SfxManager;
     [SerializeField] private GameManager GameManager;
@@ -19,6 +21,10 @@ public class Manager : MonoBehaviour
     public Action<int> UpdateGameRecord;
     public Action GameOver;
     public Action GoToMenu;
+    public Func<int> GetRecord;
+    
+    public bool triggerOnBarrier = false;
+    public int gameMode; // 0: easy --- 1: normal --- 2: hard 
 
     private void Awake()
     {
@@ -42,4 +48,22 @@ public class Manager : MonoBehaviour
 
         return true;
     }
+
+    public void Delay(float timer,Action OnComplete)
+    {
+        StartCoroutine(DelayIE(timer, OnComplete));
+    }
+    
+    IEnumerator DelayIE(float timer,Action OnComplete)
+    {
+        yield return new WaitForSeconds(timer);
+        OnComplete?.Invoke();
+    }
+}
+
+public enum GameMode
+{
+    easy,
+    normal,
+    hard
 }

@@ -10,8 +10,9 @@ public class UiManager : InitManager
     [SerializeField] private GameObject splashCanvas, menuCanvas, gameCanvas;
     [SerializeField] private Button playBtn, modeBtn, musicBtn, instagramBtn;
     [SerializeField] private TMP_Text menuRecordTxt, gameRecordTxt;
-    private int gameLevel;
+    [SerializeField] private GameObject newRecord;
 
+    private bool getNewRecord = false;
 
     private void Start()
     {
@@ -28,8 +29,9 @@ public class UiManager : InitManager
             PlayerPrefs.SetInt("gameLevel",0);
         else
         {
-            gameLevel = PlayerPrefs.GetInt("gameLevel");
-            switch (gameLevel)
+            int gameMode = PlayerPrefs.GetInt("gameLevel");
+            Manager.Instance.gameMode = gameMode;
+            switch (gameMode)
             {
                 case 0:
                     modeBtn.transform.Find("Mode").GetComponent<Image>().color = new Color32(36, 178, 56, 255);
@@ -69,7 +71,39 @@ public class UiManager : InitManager
         isInited = true;
     }
     
-    IEnumerator GoToGame_IE()
+    void PlaySplash()
+    {
+        splashCanvas.SetActive(true);
+        float splashTime = splashCanvas.transform.Find("Splash")
+            .GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length + 1;
+        Manager.Instance.Delay(splashTime, () =>
+        {
+            splashCanvas.SetActive(false);
+            GoToMenu();
+            MenuButtonsListener();
+        });
+    }
+
+    void GoToMenu()
+    {
+        if (gameCanvas.activeInHierarchy)
+            gameCanvas.SetActive(false);
+        switch (Manager.Instance.gameMode)
+        {
+            case 0:
+                menuRecordTxt.text = PlayerPrefs.GetInt("easyRecord").ToString();
+                break;
+            case 1:
+                menuRecordTxt.text = PlayerPrefs.GetInt("normalRecord").ToString();
+                break;
+            case 2:
+                menuRecordTxt.text = PlayerPrefs.GetInt("hardRecord").ToString();
+                break;
+        }
+        menuCanvas.SetActive(true);
+    }
+    
+    void GoToGame()
     {
         Animator titleAnim = menuCanvas.transform.Find("Title").GetComponent<Animator>();
         titleAnim.SetTrigger("TitleFadeOff");
@@ -83,51 +117,20 @@ public class UiManager : InitManager
         if (titleAnimTime > buttonsAnimTime)
             waitSec += titleAnimTime;
         else waitSec += buttonsAnimTime;
-        yield return new WaitForSeconds(waitSec);
-        
-        menuCanvas.SetActive(false);    
-        
-        gameCanvas.SetActive(true);
-    }
-
-    void GoToMenu()
-    {
-        StartCoroutine(GoToMenu_IE());
-    }
-    IEnumerator GoToMenu_IE()
-    {
-        if (gameCanvas.activeInHierarchy)
+        Manager.Instance.Delay(waitSec,(() =>
         {
-            gameCanvas.transform.Find("GameOver").gameObject.SetActive(true);
-            yield return new WaitForSeconds(1);
-            gameCanvas.transform.Find("GameOver").gameObject.SetActive(false);
-            gameCanvas.SetActive(false);    
-        }
-        menuCanvas.SetActive(true);
+            menuCanvas.SetActive(false);
+            gameCanvas.SetActive(true);
+        }));
     }
-
-    void PlaySplash()
-    {
-        StartCoroutine(PlaySplash_IE());
-    }
-    IEnumerator PlaySplash_IE()
-    {
-        splashCanvas.SetActive(true);
-        float splashTime = splashCanvas.transform.Find("Splash")
-            .GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length + 1;
-        yield return new WaitForSeconds(splashTime);
-        splashCanvas.SetActive(false);
-        GoToMenu();
-        MenuButtonsListener();
-    }
-
+    
     void MenuButtonsListener()
     {
         playBtn.onClick.AddListener(() =>
         {
             Manager.Instance.PlayEfx("click");
             Manager.Instance.StartNewGame();
-            StartCoroutine(GoToGame_IE());
+            GoToGame();
         });
         
         modeBtn.onClick.AddListener(() =>
@@ -135,27 +138,29 @@ public class UiManager : InitManager
             Manager.Instance.PlayEfx("click");
             if(menuRecordTxt.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("idle"))
                 menuRecordTxt.GetComponent<Animator>().SetTrigger("ChangeMode");
-            
-            if (gameLevel == 0)
+
+            int gameMode = Manager.Instance.gameMode;
+            switch (gameMode)
             {
-                gameLevel = 1;
-                menuRecordTxt.text = PlayerPrefs.GetInt("normalRecord").ToString();
-                modeBtn.transform.Find("Mode").GetComponent<Image>().color = new Color32(255, 203, 0, 255);
-            }
-            else if (gameLevel == 1)
-            {
-                gameLevel = 2;
-                menuRecordTxt.text = PlayerPrefs.GetInt("hardRecord").ToString();
-                modeBtn.transform.Find("Mode").GetComponent<Image>().color = new Color32(255, 0, 0, 255);
-            }
-            else if (gameLevel == 2)
-            {
-                gameLevel = 0;
-                menuRecordTxt.text = PlayerPrefs.GetInt("easyRecord").ToString();
-                modeBtn.transform.Find("Mode").GetComponent<Image>().color = new Color32(36, 178, 56, 255);
+                case 0:
+                    gameMode = 1;
+                    menuRecordTxt.text = PlayerPrefs.GetInt("normalRecord").ToString();
+                    modeBtn.transform.Find("Mode").GetComponent<Image>().color = new Color32(255, 203, 0, 255);
+                    break;
+                case 1:
+                    gameMode = 2;
+                    menuRecordTxt.text = PlayerPrefs.GetInt("hardRecord").ToString();
+                    modeBtn.transform.Find("Mode").GetComponent<Image>().color = new Color32(255, 0, 0, 255);
+                    break;
+                case 2:
+                    gameMode = 0;
+                    menuRecordTxt.text = PlayerPrefs.GetInt("easyRecord").ToString();
+                    modeBtn.transform.Find("Mode").GetComponent<Image>().color = new Color32(36, 178, 56, 255);
+                    break;
             }
 
-            PlayerPrefs.SetInt("gameLevel", gameLevel);
+            PlayerPrefs.SetInt("gameLevel", gameMode);
+            Manager.Instance.gameMode = gameMode;
         });
         
         musicBtn.onClick.AddListener(() =>
@@ -182,6 +187,39 @@ public class UiManager : InitManager
 
     void UpdateGameRecord(int record)
     {
+        gameRecordTxt.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
         gameRecordTxt.text = record.ToString();
+        Manager.Instance.Delay(.2f,(() =>
+        {
+            gameRecordTxt.transform.localScale = new Vector3(1, 1, 1);
+        }));
+        
+        if (!getNewRecord)
+        {
+            switch (Manager.Instance.gameMode)
+            {
+                case 0:
+                    if (record > PlayerPrefs.GetInt("easyRecord"))
+                    {
+                        getNewRecord = true;
+                        newRecord.SetActive(true);
+                    }
+                    break;
+                case 1:
+                    if (record > PlayerPrefs.GetInt("normalRecord"))
+                    {
+                        getNewRecord = true;
+                        newRecord.SetActive(true);
+                    }
+                    break;
+                case 2:
+                    if (record > PlayerPrefs.GetInt("hardRecord"))
+                    {
+                        getNewRecord = true;
+                        newRecord.SetActive(true);
+                    }
+                    break;
+            }
+        }
     }
 }
