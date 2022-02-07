@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -13,6 +14,7 @@ public class Manager : MonoBehaviour
     [SerializeField] private SFXManager SfxManager;
     [SerializeField] private GameManager GameManager;
     [SerializeField] private PollingSystem PollingSystem;
+    [SerializeField] private LeaderboardManager LeaderboardManager;
 
     public Action<String> PlayEfx;
     public Action PlaySplash;
@@ -22,7 +24,8 @@ public class Manager : MonoBehaviour
     public Action GameOver;
     public Action GoToMenu;
     public Func<int> GetRecord;
-    
+    public Func<Task> ConnectToServer;
+
     public bool triggerOnBarrier = false;
     public int gameMode; // 0: easy --- 1: normal --- 2: hard 
 

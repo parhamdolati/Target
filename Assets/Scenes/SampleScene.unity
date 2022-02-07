@@ -1198,19 +1198,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 338714014}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1711946855}
-        m_TargetAssemblyTypeName: LeadersHandler, Assembly-CSharp
-        m_MethodName: ViewNormal
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &338714014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1627,19 +1615,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 430267151}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1711946855}
-        m_TargetAssemblyTypeName: LeadersHandler, Assembly-CSharp
-        m_MethodName: ViewHard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &430267151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1946,8 +1922,6 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
-  - component: {fileID: 519420030}
-  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1963,18 +1937,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
---- !u!114 &519420030
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb69f07adc8571249b4b92204103e9dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -2032,18 +1994,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &519420033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0fcb4f6a158dad4f9b50ad234b0e75a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &541059608
 GameObject:
   m_ObjectHideFlags: 0
@@ -3988,6 +3938,7 @@ MonoBehaviour:
   SfxManager: {fileID: 1915974170}
   GameManager: {fileID: 983039297}
   PollingSystem: {fileID: 388744992}
+  LeaderboardManager: {fileID: 1951587348}
   triggerOnBarrier: 0
   gameMode: 0
 --- !u!4 &1031265544
@@ -4005,6 +3956,7 @@ Transform:
   - {fileID: 1915974171}
   - {fileID: 983039296}
   - {fileID: 388744991}
+  - {fileID: 1951587347}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5576,8 +5528,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1711946855}
-        m_TargetAssemblyTypeName: LeadersHandler, Assembly-CSharp
+      - m_Target: {fileID: 1951587348}
+        m_TargetAssemblyTypeName: LeaderboardManager, Assembly-CSharp
         m_MethodName: CloseLeadersboard
         m_Mode: 1
         m_Arguments:
@@ -5861,19 +5813,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1438927185}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1711946855}
-        m_TargetAssemblyTypeName: LeadersHandler, Assembly-CSharp
-        m_MethodName: OpenLeadersboard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1438927185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6123,10 +6063,14 @@ MonoBehaviour:
   splashCanvas: {fileID: 508192184}
   menuCanvas: {fileID: 1132315715}
   gameCanvas: {fileID: 855160154}
+  leaderboardPanel: {fileID: 1711946851}
+  openGameForFirst: {fileID: 1721980565}
   playBtn: {fileID: 1516148932}
   modeBtn: {fileID: 1451942492}
+  leaderboardBtn: {fileID: 1438927184}
   musicBtn: {fileID: 1366039739}
   instagramBtn: {fileID: 151091080}
+  setNicknameBtn: {fileID: 1866199624}
   menuRecordTxt: {fileID: 781422306}
   gameRecordTxt: {fileID: 603018953}
   newRecord: {fileID: 2095651206}
@@ -6877,7 +6821,6 @@ GameObject:
   - component: {fileID: 1711946852}
   - component: {fileID: 1711946854}
   - component: {fileID: 1711946853}
-  - component: {fileID: 1711946855}
   m_Layer: 0
   m_Name: LeaderBoards
   m_TagString: Untagged
@@ -6949,18 +6892,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1711946851}
   m_CullTransparentMesh: 1
---- !u!114 &1711946855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1711946851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18668c7ee45caba4595ac998695915e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1721980565
 GameObject:
   m_ObjectHideFlags: 0
@@ -7706,7 +7637,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Main, Assembly-CSharp
         m_MethodName: GetNickname
         m_Mode: 1
@@ -8127,6 +8058,62 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &1951587346
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1951587347}
+  - component: {fileID: 1951587348}
+  m_Layer: 0
+  m_Name: LeaderboardManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1951587347
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1951587346}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1031265544}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1951587348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1951587346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9358771ab5e2e524fb18caa41e831007, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInited: 0
+  leaderboardPanel: {fileID: 1711946851}
+  leadersPanelErrortxt: {fileID: 1360280586}
+  easyBtn: {fileID: 2031003350}
+  normalBtn: {fileID: 338714013}
+  hardBtn: {fileID: 430267150}
+  exitBtn: {fileID: 1373577777}
+  easyView: {fileID: 1368967980}
+  normalView: {fileID: 1960202708}
+  hardView: {fileID: 2134881667}
+  easyTempPlayer: {fileID: 925271036}
+  normalTempPlayer: {fileID: 826656577}
+  hardTempPlayer: {fileID: 436757759}
 --- !u!1 &1954085884
 GameObject:
   m_ObjectHideFlags: 0
@@ -8396,19 +8383,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2031003351}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1711946855}
-        m_TargetAssemblyTypeName: LeadersHandler, Assembly-CSharp
-        m_MethodName: ViewEasy
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2031003351
 MonoBehaviour:
   m_ObjectHideFlags: 0

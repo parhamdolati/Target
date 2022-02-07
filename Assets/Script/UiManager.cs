@@ -8,7 +8,9 @@ using UnityEngine.UI;
 public class UiManager : InitManager
 {
     [SerializeField] private GameObject splashCanvas, menuCanvas, gameCanvas;
-    [SerializeField] private Button playBtn, modeBtn, musicBtn, instagramBtn;
+    [SerializeField] private GameObject leaderboardPanel, openGameForFirst;
+    [SerializeField] private Button playBtn, modeBtn, leaderboardBtn, musicBtn, instagramBtn;
+    [SerializeField] private Button setNicknameBtn;
     [SerializeField] private TMP_Text menuRecordTxt, gameRecordTxt;
     [SerializeField] private GameObject newRecord;
 
@@ -101,6 +103,12 @@ public class UiManager : InitManager
                 break;
         }
         menuCanvas.SetActive(true);
+        Manager.Instance.Delay(1,(() =>
+        {
+            if (PlayerPrefs.GetInt("openGameForFirst").Equals(0))
+                openGameForFirst.SetActive(true);
+        }));
+        
     }
     
     void GoToGame()
@@ -132,7 +140,7 @@ public class UiManager : InitManager
             Manager.Instance.StartNewGame();
             GoToGame();
         });
-        
+
         modeBtn.onClick.AddListener(() =>
         {
             Manager.Instance.PlayEfx("click");
@@ -163,6 +171,13 @@ public class UiManager : InitManager
             Manager.Instance.gameMode = gameMode;
         });
         
+        leaderboardBtn.onClick.AddListener((() =>
+        {
+            Manager.Instance.PlayEfx("click");
+            leaderboardPanel.SetActive(true);
+            Manager.Instance.ConnectToServer();
+        }));
+        
         musicBtn.onClick.AddListener(() =>
         {
             if (PlayerPrefs.GetInt("music") == 1)
@@ -183,6 +198,8 @@ public class UiManager : InitManager
             Manager.Instance.PlayEfx("click");
             Application.OpenURL("https://www.instagram.com/parham_dolati_/");
         });
+        
+        setNicknameBtn.onClick.AddListener(() => GetNickname());
     }
 
     void UpdateGameRecord(int record)
@@ -220,6 +237,18 @@ public class UiManager : InitManager
                     }
                     break;
             }
+        }
+    }
+    
+    void GetNickname()
+    {
+        string nickname = openGameForFirst.transform.Find("NicknameBorder").Find("NickNameInput")
+            .GetComponent<TMP_InputField>().text;
+        if (nickname != "")
+        {
+            PlayerPrefs.SetString("nickName", nickname);
+            PlayerPrefs.SetInt("openGameForFirst", 1);
+            openGameForFirst.SetActive(false);
         }
     }
 }
