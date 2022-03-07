@@ -15,6 +15,7 @@ public class UiManager : InitManager
     [SerializeField] private GameObject newRecord;
 
     private bool getNewRecord = false;
+    private bool playGame = false;
 
     private void Start()
     {
@@ -88,6 +89,8 @@ public class UiManager : InitManager
 
     void GoToMenu()
     {
+        playGame = false;
+        newRecord.SetActive(false);
         if (gameCanvas.activeInHierarchy)
             gameCanvas.SetActive(false);
         switch (Manager.Instance.gameMode)
@@ -136,9 +139,13 @@ public class UiManager : InitManager
     {
         playBtn.onClick.AddListener(() =>
         {
-            Manager.Instance.PlayEfx("click");
-            Manager.Instance.StartNewGame();
-            GoToGame();
+            if (!playGame)
+            {
+                playGame = true;
+                Manager.Instance.PlayEfx("click");
+                Manager.Instance.StartNewGame();
+                GoToGame();
+            }
         });
 
         modeBtn.onClick.AddListener(() =>
@@ -147,6 +154,8 @@ public class UiManager : InitManager
             if(menuRecordTxt.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("idle"))
                 menuRecordTxt.GetComponent<Animator>().SetTrigger("ChangeMode");
 
+            Manager.Instance.ResetLastRecord();
+            
             int gameMode = Manager.Instance.gameMode;
             switch (gameMode)
             {

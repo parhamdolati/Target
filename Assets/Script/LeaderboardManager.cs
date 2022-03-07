@@ -217,12 +217,13 @@ public class LeaderboardManager : InitManager
 
     void ClearAllLeadersList()
     {
-        foreach (GameObject player in easyLeadersPlayerList)
-            Destroy(player);
-        foreach (GameObject player in normalLeadersPlayerList)
-            Destroy(player);
-        foreach (GameObject player in hardLeadersPlayerList)
-            Destroy(player);
+        for (int i = 0; i < easyLeadersPlayerList.Count; i++)
+            Destroy(easyLeadersPlayerList[i]);
+        for (int i = 0; i < normalLeadersPlayerList.Count; i++)
+            Destroy(normalLeadersPlayerList[i]);
+        for (int i = 0; i < hardLeadersPlayerList.Count; i++)
+            Destroy(hardLeadersPlayerList[i]);
+        
         easyLeadersPlayerList.Clear();
         normalLeadersPlayerList.Clear();
         hardLeadersPlayerList.Clear();

@@ -4,17 +4,18 @@ ScriptsOnlyBuild:
     - Plugins.GameService.Utils.GameServiceInitializer
     Assembly-CSharp.dll:
     - Ball
-    - LeadersHandler
-    - Main
-    - SoundHandler
-    - Target
+    - GameManager
+    - LeaderboardManager
+    - Manager
+    - PollingSystem
+    - SFXManager
+    - UiManager
     RTLTMPro.dll:
     - RTLTMPro.RTLTextMeshPro
     Unity.2D.Animation.Editor.dll:
     - UnityEditor.U2D.Animation.BoneGizmo
     Unity.2D.IK.Editor.dll:
     - UnityEditor.U2D.IK.IKEditorManager
-    - UnityEditor.U2D.IK.IKGizmos
     Unity.2D.IK.Runtime.dll:
     - UnityEditor.U2D.IK.IKEditorManagerHelper
     Unity.2D.Tilemap.Editor.dll:
@@ -25,6 +26,9 @@ ScriptsOnlyBuild:
     - UnityEditor.Tilemaps.SceneViewOpenTilePaletteHelper
     - UnityEditor.Tilemaps.TileDragAndDropManager
     - UnityEditor.Tilemaps.TilemapPrefabStageHelper
+    Unity.DeviceSimulator.Editor.dll:
+    - UnityEditor.DeviceSimulation.DeviceInfoAsset
+    - UnityEditor.DeviceSimulation.SimulatorWindow
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.RiderScriptEditorData
     - Packages.Rider.Editor.UnitTesting.CallbackData
@@ -96,57 +100,61 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1560}
+      Script: {instanceID: 1504}
     - Class: 114
-      Script: {instanceID: 1596}
+      Script: {instanceID: 1598}
     - Class: 114
-      Script: {instanceID: 1758}
+      Script: {instanceID: 1768}
     - Class: 114
-      Script: {instanceID: 1852}
+      Script: {instanceID: 1866}
     - Class: 114
-      Script: {instanceID: 1886}
+      Script: {instanceID: 2216}
     - Class: 114
-      Script: {instanceID: 1958}
+      Script: {instanceID: 2222}
     - Class: 114
-      Script: {instanceID: 2196}
+      Script: {instanceID: 2432}
     - Class: 114
-      Script: {instanceID: 2204}
+      Script: {instanceID: 2630}
     - Class: 114
-      Script: {instanceID: 2606}
+      Script: {instanceID: 2794}
     - Class: 114
-      Script: {instanceID: 2770}
+      Script: {instanceID: 2842}
     - Class: 114
-      Script: {instanceID: 2818}
+      Script: {instanceID: 2994}
     - Class: 114
-      Script: {instanceID: 2962}
+      Script: {instanceID: 3228}
     - Class: 114
-      Script: {instanceID: 3158}
+      Script: {instanceID: 3290}
     - Class: 114
-      Script: {instanceID: 3190}
+      Script: {instanceID: 3346}
     - Class: 114
-      Script: {instanceID: 3302}
+      Script: {instanceID: 3558}
     - Class: 114
-      Script: {instanceID: 3510}
+      Script: {instanceID: 3716}
     - Class: 114
-      Script: {instanceID: 3666}
+      Script: {instanceID: 3798}
     - Class: 114
-      Script: {instanceID: 3964}
+      Script: {instanceID: 3850}
     - Class: 114
-      Script: {instanceID: 4160}
+      Script: {instanceID: 4020}
     - Class: 114
-      Script: {instanceID: 4236}
+      Script: {instanceID: 4298}
     - Class: 114
-      Script: {instanceID: 4428}
+      Script: {instanceID: 4492}
     - Class: 114
-      Script: {instanceID: 4510}
+      Script: {instanceID: 4576}
     - Class: 114
-      Script: {instanceID: 4530}
+      Script: {instanceID: 4596}
     - Class: 114
-      Script: {instanceID: 4882}
+      Script: {instanceID: 4638}
     - Class: 114
-      Script: {instanceID: 4982}
+      Script: {instanceID: 4958}
     - Class: 114
-      Script: {instanceID: 5174}
+      Script: {instanceID: 5062}
+    - Class: 114
+      Script: {instanceID: 5256}
+    - Class: 114
+      Script: {instanceID: 5388}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -166,16 +174,16 @@ ScriptsOnlyBuild:
   scriptHashData:
   - hash:
       serializedVersion: 2
-      Hash: 5ab533713adae59372fb3e10a585c186
-    assemblyName: Unity.Timeline.dll
-    namespaceName: UnityEngine.Timeline
-    className: AnimationPlayableAsset
-  - hash:
-      serializedVersion: 2
       Hash: a6e561615949734e9f12f9b61661f43e
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Image
+  - hash:
+      serializedVersion: 2
+      Hash: 5ab533713adae59372fb3e10a585c186
+    assemblyName: Unity.Timeline.dll
+    namespaceName: UnityEngine.Timeline
+    className: AnimationPlayableAsset
   - hash:
       serializedVersion: 2
       Hash: 77aaaaa51f7a8d8ff333a879741e47d2
@@ -250,18 +258,6 @@ ScriptsOnlyBuild:
     className: TMP_FontAsset
   - hash:
       serializedVersion: 2
-      Hash: e2277d036134e1f27be42eddb26650a7
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: Main
-  - hash:
-      serializedVersion: 2
-      Hash: fa9ac64218d855fd0255a1b1efd504ba
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: Target
-  - hash:
-      serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
@@ -296,6 +292,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: RawImage
+  - hash:
+      serializedVersion: 2
+      Hash: a02d13d0cee6d6165c6c03dfa6100130
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: LeaderboardManager
   - hash:
       serializedVersion: 2
       Hash: cfdd0010efd7b54c2b7512656dbc9119
@@ -412,10 +414,10 @@ ScriptsOnlyBuild:
     className: TestResultRendererCallback
   - hash:
       serializedVersion: 2
-      Hash: 41419a090f0155e56c05719173938736
+      Hash: dd802f8fe615978432914756b16030f0
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: LeadersHandler
+    className: InitManager
   - hash:
       serializedVersion: 2
       Hash: 748dd2a2a28da4e618912da5ac45684b
@@ -446,6 +448,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestTools
     className: BeforeAfterTestCommandState
+  - hash:
+      serializedVersion: 2
+      Hash: 87689293083d049e4a8039057f474539
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: GameManager
   - hash:
       serializedVersion: 2
       Hash: 0fd6822f6177297bd0eb4d83cc7a9030
@@ -526,6 +534,18 @@ ScriptsOnlyBuild:
     className: BaseInput
   - hash:
       serializedVersion: 2
+      Hash: 442887a8a12fe7bd49f69b0fff7ec899
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PollingSystem
+  - hash:
+      serializedVersion: 2
+      Hash: 5dd901cff76a3afc12f94431cc66350e
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Manager
+  - hash:
+      serializedVersion: 2
       Hash: 18c222bef9ae745ce69ddde9b74337ca
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.EventSystems
@@ -562,7 +582,7 @@ ScriptsOnlyBuild:
     className: AudioPlayableAsset
   - hash:
       serializedVersion: 2
-      Hash: 110b4b80fed069058551ea078b32dec4
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Ball
@@ -608,12 +628,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: SignalTrack
-  - hash:
-      serializedVersion: 2
-      Hash: 2be82f189d955de92f78318e678d99ee
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: SoundHandler
   - hash:
       serializedVersion: 2
       Hash: aba7b2852ef61d175dd9602e7723d5e5
@@ -682,6 +696,12 @@ ScriptsOnlyBuild:
     className: TMP_Settings
   - hash:
       serializedVersion: 2
+      Hash: d2f07051ce45901141d4712980a3d562
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UiManager
+  - hash:
+      serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Unity.2D.Animation.Runtime.dll
     namespaceName: UnityEngine.U2D.Animation
@@ -740,6 +760,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: SignalEmitter
+  - hash:
+      serializedVersion: 2
+      Hash: 765254e314e72cda42e67da9e0a81dff
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: SFXManager
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f

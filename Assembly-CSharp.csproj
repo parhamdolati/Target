@@ -52,6 +52,7 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Script\LeaderboardManager.cs" />
      <Compile Include="Assets\Script\InitManager.cs" />
      <Compile Include="Assets\Script\GameManager.cs" />
      <Compile Include="Assets\Script\PollingSystem.cs" />
@@ -59,7 +60,6 @@
      <Compile Include="Assets\Script\Ball.cs" />
      <Compile Include="Assets\Script\UiManager.cs" />
      <Compile Include="Assets\Script\SFXManager.cs" />
-     <Compile Include="Assets\Script\LeaderboardManager.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\RTLTMPro\Resources\Shaders\TMP_SDF-Mobile Fixed.shader" />
@@ -736,6 +736,9 @@
  </Reference>
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>D:/My Project/Unity Project/Target/Target/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.DeviceSimulator.Editor">
+ <HintPath>D:/My Project/Unity Project/Target/Target/Library/ScriptAssemblies/Unity.DeviceSimulator.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Mathematics.Editor">
  <HintPath>D:/My Project/Unity Project/Target/Target/Library/ScriptAssemblies/Unity.Mathematics.Editor.dll</HintPath>

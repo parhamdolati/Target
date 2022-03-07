@@ -748,6 +748,9 @@
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>D:/My Project/Unity Project/Target/Target/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.DeviceSimulator.Editor">
+ <HintPath>D:/My Project/Unity Project/Target/Target/Library/ScriptAssemblies/Unity.DeviceSimulator.Editor.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.Mathematics.Editor">
  <HintPath>D:/My Project/Unity Project/Target/Target/Library/ScriptAssemblies/Unity.Mathematics.Editor.dll</HintPath>
  </Reference>

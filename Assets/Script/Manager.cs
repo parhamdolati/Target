@@ -25,6 +25,7 @@ public class Manager : MonoBehaviour
     public Action GoToMenu;
     public Func<int> GetRecord;
     public Func<Task> ConnectToServer;
+    public Action ResetLastRecord;
 
     public bool triggerOnBarrier = false;
     public int gameMode; // 0: easy --- 1: normal --- 2: hard 

@@ -1,15 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts.Internal;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    private int baseSpeed = 1;
     private void Update()
     {
         if (!Manager.Instance.triggerOnBarrier)
-            transform.position += Vector3.up *  (baseSpeed + ((100 + Manager.Instance.GetRecord()) / 50f));
+            transform.position = Vector3.Lerp(transform.position, 
+                new Vector3(transform.position.x, transform.position.y + 40, transform.position.z),
+                Time.deltaTime * (100 + Manager.Instance.GetRecord() / 50f));
     }
 
     private void OnTriggerEnter2D(Collider2D other)

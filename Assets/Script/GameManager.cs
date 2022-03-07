@@ -1,8 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Playables;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : InitManager
 {
@@ -13,7 +12,9 @@ public class GameManager : InitManager
     private List<GameObject> Balls = new List<GameObject>();
     private Coroutine rotateCor;
     private int record;
+    private int lastRecord;
     private bool canFireBall = false;
+    private float touchBeginTime;
 
     private void Start()
     {
@@ -21,25 +22,28 @@ public class GameManager : InitManager
         Manager.Instance.GameOver += GameOver;
         Manager.Instance.RecordUp += RecordUp;
         Manager.Instance.GetRecord += GetRecord;
+        Manager.Instance.ResetLastRecord += ResetLastRecord;
+        lastRecord = 0;
         isInited = true;
     }
 
     void StartNewGame()
     {
-        for (int i = 0; i <= PlayerPrefs.GetInt("gameLevel"); i++)
+        for (int i = 0; i <= Manager.Instance.gameMode; i++)
         {
             barriers[i].SetActive(true);
             barriers[i].transform.eulerAngles = Vector3.zero;
         }
         rotateCor = StartCoroutine(RotateBarriers(Manager.Instance.gameMode));
 
-        record = 0;
+        record = (lastRecord * 60) / 100;
         Manager.Instance.UpdateGameRecord(record);
         Manager.Instance.Delay(3,(() => canFireBall = true));
     }
 
     void GameOver()
     {
+        lastRecord = record;
         StopCoroutine(rotateCor);
         canFireBall = false;
         gameOver.SetActive(true);
@@ -48,6 +52,7 @@ public class GameManager : InitManager
         {
             for (int i = 0; i < Balls.Count; i++)
             {
+                Balls[i].GetComponent<Animator>().enabled = false;
                 PollingSystem.Instance.BackToPool("Ball", Balls[i]);
             }
             Balls.Clear();
@@ -73,13 +78,17 @@ public class GameManager : InitManager
             
             Manager.Instance.triggerOnBarrier = false;
             Manager.Instance.GoToMenu();
-            
+            for (int i = 0; i <= barriers.Length; i++)
+            {
+                barriers[i].SetActive(false);
+            }
         }));
     }
 
     void RecordUp(GameObject ball)
     {
         record++;
+        ball.GetComponent<Animator>().enabled = false;
         PollingSystem.Instance.BackToPool("Ball",ball);
         Balls.Remove(ball);
         Manager.Instance.UpdateGameRecord(record);
@@ -116,6 +125,11 @@ public class GameManager : InitManager
         return record;
     }
 
+    void ResetLastRecord()
+    {
+        lastRecord = 0;
+    }
+
     private void Update()
     {
         if (canFireBall)
@@ -133,6 +147,32 @@ public class GameManager : InitManager
                     if (cannon.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("idle"))
                         cannon.GetComponent<Animator>().SetTrigger("fire");
                     Balls.Add(ball);
+                }
+            }
+            else if (Application.platform == RuntimePlatform.Android)
+            {
+                if (Input.touchCount > 0 && Input.GetTouch(0).phase.Equals(TouchPhase.Began))
+                {
+                    touchBeginTime = Time.time;
+                }
+
+                else if (Input.GetTouch(0).phase.Equals(TouchPhase.Ended))
+                {
+                    if (Time.time - touchBeginTime < 0.5f)
+                    {
+                        var ball = PollingSystem.Instance.GetFromPool("Ball");
+                        ball.transform.parent = target.transform;
+                        ball.transform.localScale = Vector3.one;
+                        ball.transform.position = cannon.transform.parent.Find("Ball").transform.position;
+                        ball.GetComponent<Image>().color = Color.white;
+                        ball.SetActive(true);
+                        Manager.Instance.PlayEfx("ball");
+                        if (cannon.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("idle"))
+                            cannon.GetComponent<Animator>().SetTrigger("fire");
+                        Balls.Add(ball);
+                    }
+
+                    touchBeginTime = 0;
                 }
             }
         }
