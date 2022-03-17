@@ -48,3 +48,14 @@ The following packages were updated:
   com.unity.2d.animation from version 5.0.1 to 5.0.4
   com.unity.2d.psdimporter from version 4.0.1 to 4.0.2
   com.unity.2d.spriteshape from version 5.0.1 to 5.1.1
+
+=== Fri Mar 18 01:56:10 2022
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.2d.common from version 2.0.2 to 4.0.2
+  com.unity.2d.path from version 2.0.5 to 4.0.1
+  com.unity.2d.spriteshape from version 3.0.12 to 5.1.1
+  com.unity.textmeshpro from version 2.0.1 to 3.0.1
